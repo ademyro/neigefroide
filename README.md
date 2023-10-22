@@ -18,7 +18,7 @@ struct LinkedNode {
 }
 
 fn main() {
-    let linked_list = LinkedNode.new(-1); 
+    let linked_list = &LinkedNode.new(-1); 
 
     for i in 0..10 {
         linked_list.next = &LinkedNode.new(i); 
