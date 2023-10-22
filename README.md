@@ -41,7 +41,7 @@ the project.
 Upon contributing, we encourage you to write clean, maintainable code.  The 
 compiler doesn’t need to be exceptionally fast (but the output does.)  Please
 try to follow our current code style (use camelCase, keep your headers in 
-`include/`, etc.)  We might provide a contributing guide in the future.
+`include/`, etc.)  We might also provide a contributing guide in the future.
 
 # Pronunciation.
 
