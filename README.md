@@ -18,7 +18,7 @@ struct LinkedNode {
 }
 
 fn main() {
-    let linked_list = LinkedNode.new(-1); 
+    let linked_list = &LinkedNode.new(-1); 
 
     for i in 0..10 {
         linked_list.next = &LinkedNode.new(i); 
@@ -26,6 +26,22 @@ fn main() {
     }
 }
 ```
+
+Neve is currently under development.  It’s in its very early days of life, and 
+we’ll do our best to raise it well.
+You can run `make` and build the project from source, but you shouldn’t expect
+much from that.  Currently, `nevec` is just a `cat` command with extra steps. 
+
+# Contributing
+
+Great!  Any contribution to the Neve programming language is welcome.  We’ll do 
+our best to provide code examples and a roadmap for anyone who whishes to join
+the project.
+
+Upon contributing, we encourage you to write clean, maintainable code.  The 
+compiler doesn’t need to be exceptionally fast (but the output does.)  Please
+try to follow our current code style (use camelCase, keep your headers in 
+`include/`, etc.)  We might also provide a contributing guide in the future.
 
 # Pronunciation.
 
