@@ -1,0 +1,58 @@
+struct Bar {
+    baz: i32,
+
+    ext fn new(baz: i32) {
+        return Bar {
+            baz: baz
+        };
+    }
+}
+
+type Seq Vec;
+type Word str;
+
+fn main() {
+    let foo = Bar.new(20);
+    let zaz = Bar.new(20);
+    zaz.baz += 10;
+
+    if foo.baz != zaz.baz && foo.baz == -10 {
+        let msg = "Zaz";
+
+        println(msg);
+        let ch = msg[0];
+    }
+
+    let foobar = true;
+
+    while foobar {
+        println("{}", foo.baz == 20 ? zaz.baz : -zaz.baz * 5/10);
+        
+        foobar = false;
+    }
+
+    // ???  will we actually accept this
+    let list = (0..5).collect();
+    let filtered: ?List = list.filter(|x| x.even()) ! nil;
+    
+    let seq = Seq<Word>.new("Foo", "Bar", "Baz", "Zaz");
+    seq.for_each(|word| println(word)); 
+}
+
+ext for i32 {
+    fn even(self) {
+        return self % 2 == 0;
+    } 
+}
+
+ext for Word {
+    fn chars(self) {
+        let chars = Vec.with_size(self.len);
+
+        for i in 0..self.len {
+            chars[i] = self[i];
+        }
+
+        return chars; 
+    } 
+}

@@ -21,7 +21,7 @@ static char *readFile(const char *fname) {
     size_t end = fread(buf, sizeof (char), fsize, file);
 
     if (buf == NULL) {
-        cliErr("not enough memory to read %s.");
+        cliErr("not enough memory to read %s.", fname);
         return NULL;
     }
 
