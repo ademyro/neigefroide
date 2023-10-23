@@ -8,7 +8,7 @@ static void write(const char *s) {
 }
 
 static void endFormat() {
-    fprintf(stderr, RESET "\n");
+    write(RESET "\n");
 }
 
 void renderSimpleErr(const char *fmt, va_list args) {
