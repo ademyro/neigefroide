@@ -36,7 +36,7 @@ much from that.  Currently, `nevec` is just a `cat` command with extra steps.
 
 Great!  Any contribution to the Neve programming language is welcome.  We’ll do 
 our best to provide code examples and a roadmap for anyone who whishes to join
-the project.
+the project.  Please refer to `contributing/` to get started.
 
 Upon contributing, we encourage you to write clean, maintainable code.  The 
 compiler doesn’t need to be exceptionally fast (but the output does.)  Please
