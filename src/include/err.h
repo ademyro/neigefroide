@@ -2,7 +2,7 @@
 #define nevec_error_h
 
 typedef enum {
-    UNEXPECTED_CHARACTER
+    UNEXPECTED_CHAR
 } Err;
 
 void cliErr(const char *fmt, ...);
