@@ -1,0 +1,45 @@
+struct Bar
+    baz = i32.def
+    
+    new = |self, baz|
+        self.baz = baz
+    end
+end
+
+foo = Bar.new(20)
+zaz = Bar.new(20)
+zaz.baz += 10
+
+if foo.baz != zaz.baz and foo.baz == -10
+    msg = "Zaz"
+    
+    put msg
+    ch = msg[0]
+end
+
+foobar = true
+
+while foobar
+    put foo.baz == 20 ? zaz.baz else -zaz.baz * 5/10
+
+    foobar = false
+end
+
+list = 0..5
+filtered = list.filter |x| x.even() 
+
+seq = ["foo", "bar", "baz", "zaz"]
+seq.each |word| put word
+
+int.even = |self| 
+    -> self % 2 == 0
+
+str.chars = |self|
+    chars = [].size(self.len)
+    
+    for i in 0..self.len
+        chars[i] = self[i]
+    end
+
+    ret chars
+end
