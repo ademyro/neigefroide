@@ -85,8 +85,8 @@ static Token unexpectedChar(Lexer *lexer) {
 }
 
 static void synchronize(Lexer *lexer) {
-    lexer->start = lexer->curr;
     lexer->loc.col += currTokenLength(lexer);    
+    lexer->start = lexer->curr;
 }
 
 static void multilineComment(Lexer *lexer) {
@@ -94,6 +94,11 @@ static void multilineComment(Lexer *lexer) {
 
     while (!atEnd(lexer) && depth > 0) {
         advance(lexer);
+        lexer->loc.col++;
+
+        if (match(lexer, '\n')) {
+            newline(lexer);
+        }
         
         if (matchSeq(lexer, "/*")) {
             depth++; 

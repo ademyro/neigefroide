@@ -11,12 +11,8 @@
     * Returns `NULL` if the file cannot be opened.
     * Returns `NULL` if there’s not enough memory to read `fname.`
 
-`static void cat(const char *fname)`
-* **Temporary.**
-* Prints the contents of `fname` to `stderr.` 
-    * Exits if `contents == NULL.`
-
 `static void compile(const char *fname)`
 * **Temporary.**
-* Calls `cat(fname).`
+* Pools for the next token and prints it until we reach an `END` (i.e. `EOF`)
+token.
 

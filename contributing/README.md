@@ -11,9 +11,7 @@ Upon creating or modifying a module, please make sure to document your changes
 thoroughly.  This’ll help both us and your future self.
 
 Next steps:
-* Define token types
 * Expand `err/`
-* Write lexer
-* Write temporary compiler code to drive it 
 * Define AST
 * Write Parser
+* Write parser pretty printer
