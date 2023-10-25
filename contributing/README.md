@@ -9,3 +9,9 @@ structs, functions and static functions.
 
 Upon creating or modifying a module, please make sure to document your changes 
 thoroughly.  This’ll help both us and your future self.
+
+Next steps:
+* Expand `err/`
+* Define AST
+* Write Parser
+* Write parser pretty printer
