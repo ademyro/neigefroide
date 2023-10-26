@@ -1,6 +1,6 @@
 ```
 error: 😱 resource leak
-   in: example.nv:28:1
+   in: example.nv:28:0
    |
 28 | }
    | ^ end of scope, ‘buf’ not freed

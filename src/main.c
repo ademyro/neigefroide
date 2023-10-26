@@ -37,6 +37,7 @@ static char *readFile(const char *fname) {
 
 static void compile(const char *fname) {
     char *contents = readFile(fname);
+    initErrMod(fname, contents);
 
     Lexer lexer;
     initLexer(&lexer, contents);
@@ -50,7 +51,17 @@ static void compile(const char *fname) {
         if (token.type == END) {
             break;
         }
+
+        // Hey, that’s temporary okay?
+        if (token.type == ERR) {
+            reportErrAt(token.loc, "🧐 unexpected character");
+            showOffendingLine(token.loc, "what is this?");
+            showHint(token.loc, "‘%c’ isn’t recognized as a valid token", 
+                     *token.start);
+        }
     }
+
+    free(contents);
 }
 
 int main(int argc, char **argv) {
