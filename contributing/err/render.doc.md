@@ -39,6 +39,10 @@ being `fmt` and `...`)
 `void renderHint(const char *fmt, va_list args)`
 * Lower-level helper for `err.showHint().`
 
+`static int digitsIn(int n)`
+* Returns the number of digits in `n.`
+    * `n = 1024.`  `digitsIn(n) = 1024.`
+
 `static void write(const char *s)`
 * Outputs `s` to `stderr.` 
 
@@ -46,6 +50,9 @@ being `fmt` and `...`)
 * Accepts a format string and displays it to `stderr` through `vfprintf().`
 (I’ll really do anything to avoid writing `fprintf(stderr, ...)` more than 
 twice lmao.)
+
+`static void renderRawLine(char *src, int line)`
+* Prints line `line` from `src` without formatting.
 
 `static void endFormat()`
 * Disables fancy formatting and returns to normal.
