@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "core.h"
 #include "err.h"
+#include "lexer.h"
+#include "token.h"
 
 #define READ_BIN "rb"
 
@@ -32,20 +35,33 @@ static char *readFile(const char *fname) {
     return buf;
 }
 
-static void cat(const char *fname) {
-    char *contents = readFile(fname);      
+static void compile(const char *fname) {
+    char *contents = readFile(fname);
+    initErrMod(fname, contents);
 
-    if (contents == NULL) {
-        exit(1);
+    Lexer lexer;
+    initLexer(&lexer, contents);
+
+    while (true) {
+        Token token = nextToken(&lexer);
+
+        printf("%2d:%2d %2d ", token.loc.line, token.loc.col, token.type);
+        printf("'%.*s'\n", token.loc.length, token.start);
+
+        if (token.type == END) {
+            break;
+        }
+
+        // Hey, that’s temporary okay?
+        if (token.type == ERR) {
+            reportErrAt(token.loc, "🧐 unexpected character");
+            showOffendingLine(token.loc, "what is this?");
+            showHint(token.loc, "‘%c’ isn’t recognized as a valid token", 
+                     *token.start);
+        }
     }
 
-    fprintf(stderr, "%s", contents);
     free(contents);
-}
-
-static void compile(const char *fname) {
-    // Temporary code to get the compiler driving.
-    cat(fname);
 }
 
 int main(int argc, char **argv) {

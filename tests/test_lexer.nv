@@ -8,11 +8,9 @@ struct Bar {
     }
 }
 
-type Seq Vec;
-type Word str;
-
 fn main() {
     let foo = Bar.new(20);
+    let value = @0.0;
     let zaz = Bar.new(20);
     zaz.baz += 10;
 
@@ -33,9 +31,10 @@ fn main() {
 
     // ???  will we actually accept this
     let list = (0..5).collect();
+
     let filtered: ?List = list.filter(|x| x.even()) ! nil;
     
-    let seq = Seq<Word>.new("Foo", "Bar", "Baz", "Zaz");
+    let seq = Seq<str>.new("Foo", "Bar", "Baz", "Zaz");
     seq.for_each(|word| println(word)); 
 }
 
@@ -45,7 +44,7 @@ ext for i32 {
     } 
 }
 
-ext for Word {
+ext for str {
     fn chars(self) {
         let chars = Vec.with_size(self.len);
 
