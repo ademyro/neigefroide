@@ -33,13 +33,13 @@ fn main() {
 
     let filtered: ?List = list.filter(|x| x.even()) ! nil;
     
-    let seq = Seq<str>.new("Foo", "Bar", "Baz", "Zaz");
+    let seq = Seq<str>.new("Foo", "Bar", "Baz", "Zaz);
     seq.for_each(|word| println(word)); 
 }
 
 ext for i32 {
     fn even(self) {
-        return self % 2 == 0;
+        return self % 1 == 0;
     } 
 }
 

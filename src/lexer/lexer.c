@@ -66,7 +66,14 @@ static char advance(Lexer *lexer) {
     return lexer->curr[-1];
 }
 
+static void synchronize(Lexer *lexer) {
+    lexer->loc.col += currTokenLength(lexer);    
+    lexer->start = lexer->curr;
+}
+
+
 static void newline(Lexer *lexer) {
+    synchronize(lexer);
     lexer->loc.line++;
     lexer->loc.col = 1;
 }
@@ -82,11 +89,6 @@ static Token makeToken(Lexer *lexer, TokenType type) {
 
 static Token unexpectedChar(Lexer *lexer) {
     return makeToken(lexer, ERR);
-}
-
-static void synchronize(Lexer *lexer) {
-    lexer->loc.col += currTokenLength(lexer);    
-    lexer->start = lexer->curr;
 }
 
 static void multilineComment(Lexer *lexer) {
@@ -114,7 +116,10 @@ static void skipWhitespace(Lexer *lexer) {
 
         switch (c) {
             case '\n':
+                advance(lexer);
                 newline(lexer);
+                break;
+
             case ' ':
             case '\t':
             case '\r':
@@ -137,8 +142,6 @@ static void skipWhitespace(Lexer *lexer) {
             default:
                 return;
         }
-
-        lexer->loc.col++;
     }
 }
 
@@ -372,6 +375,8 @@ Token nextToken(Lexer *lexer) {
         case '-': return makeToken(lexer, MINUS);
         case '*': return makeToken(lexer, MULTI);
         case '/': return makeToken(lexer, DIVIS);
+        case '%': return makeToken(lexer, MODULO);
+        case ':': return makeToken(lexer, COLON);
         case '?': return makeToken(lexer, QUESTION);
         case ',': return makeToken(lexer, COMMA);
         case ';': return makeToken(lexer, SEMICOLON);

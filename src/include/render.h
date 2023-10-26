@@ -9,6 +9,9 @@
 #define WHITE "\e[1;37m"
 #define RESET "\e[0m"
 
-void renderSimpleErr(const char *fmt, va_list args);
-
+void renderErrMsg(const char *fmt, va_list args);
+void renderLocus(const char *fname, Loc loc);
+void renderLine(char *src, int line);
+void highlightErr(Loc loc, const char *fmt, va_list args);
+void renderHint(Loc loc, const char *fmt, va_list args);
 #endif
