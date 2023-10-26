@@ -1,8 +1,6 @@
 #ifndef nevec_error_h
 #define nevec_error_h
 
-#include <stdio.h>
-
 #include "token.h"
 
 typedef struct {
