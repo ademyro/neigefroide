@@ -41,6 +41,7 @@ static void compile(const char *fname) {
 
     Lexer lexer;
     initLexer(&lexer, contents);
+    Token firstToken = nextToken(&lexer);
 
     while (true) {
         Token token = nextToken(&lexer);
@@ -49,6 +50,11 @@ static void compile(const char *fname) {
         printf("'%.*s'\n", token.loc.length, token.start);
 
         if (token.type == END) {
+            reportErrAt(token.loc, "😱 resource leak (test)");
+            showOffendingLine(token.loc, "end of scope, ‘buf’ not freed");
+            showNote(firstToken.loc, "‘buf’ declared here");
+            showHint(token.loc, "free ‘buf’ before exiting the scope");
+            suggestFix(token.loc, "buf.free();");
             break;
         }
 

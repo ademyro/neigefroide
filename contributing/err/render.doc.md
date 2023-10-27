@@ -36,8 +36,20 @@ the line `line` in `file` and displays it to `stderr.`
 * Displays circumflexes `^` beneath the error, along with a message (that 
 being `fmt` and `...`)
 
+`void highlightNote(Loc loc, const char *fmt, va_list args)`
+* Displays dashes `-` beneath the error, along with a message (that being 
+`fmt` and `...`)
+
 `void renderHint(const char *fmt, va_list args)`
 * Lower-level helper for `err.showHint().`
+
+`void renderModifiedLine(char *src, Loc loc, const char *fmt, va_list args)`
+* Prints the previous unmodified line, stops at `loc.col,` writes `fmt` and 
+`args,` finished writing the line, and then adds `+` symbols underneath 
+the fix.
+
+`void renderFix(char *src, int line, const char *fmt, va_list args)`
+* Prints a new line given `fmt` and `...` and renders it as a fix.
 
 `static int digitsIn(int n)`
 * Returns the number of digits in `n.`
@@ -51,7 +63,7 @@ being `fmt` and `...`)
 (I’ll really do anything to avoid writing `fprintf(stderr, ...)` more than 
 twice lmao.)
 
-`static void renderRawLine(char *src, int line)`
+`static void writeLine(char *src, int line)`
 * Prints line `line` from `src` without formatting.
 
 `static void endFormat()`
