@@ -20,6 +20,8 @@ void cliErr(const char *fmt, ...) {
 }
 
 void reportErrAt(Loc loc, const char *fmt, ...) {
+    setLine(loc.line);
+
     const char *fname = mod.fname;
     va_list args;
 
@@ -33,11 +35,22 @@ void showOffendingLine(Loc loc, const char *fmt, ...) {
     char *src = mod.src;
     va_list args;
     
-    renderLine(src, loc.line); 
+    renderLine(src, loc); 
 
     va_start(args, fmt);
     highlightErr(loc, fmt, args);
     va_end(args); 
+}
+
+void showNote(Loc loc, const char *fmt, ...) {
+    char *src = mod.src;
+    va_list args;
+
+    renderLine(src, loc);
+
+    va_start(args, fmt);
+    highlightNote(loc, fmt, args);
+    va_end(args);
 }
 
 void showHint(Loc loc, const char *fmt, ...) {
@@ -45,5 +58,31 @@ void showHint(Loc loc, const char *fmt, ...) {
 
     va_start(args, fmt);
     renderHint(loc, fmt, args);
+    va_end(args);
+}
+
+void suggestFix(Loc fixLoc, const char *fmt, ...) {
+    char *src = mod.src;
+    va_list args;
+
+    va_start(args, fmt);
+    renderModifiedLine(src, fixLoc, fmt, args);
+    highlightChange(fixLoc, fmt, args);
+    va_end(args);
+}
+
+void suggestFixAbove(int line, const char *fmt, ...) {
+    char *src = mod.src;
+    va_list args;
+
+    Loc fixLoc = newLoc();
+    fixLoc.line = line;
+
+    Loc lineBelow = newLoc();
+    lineBelow.line = line + 1;
+
+    va_start(args, fmt);
+    renderFix(src, fixLoc, fmt, args);
+    renderLine(src, lineBelow);
     va_end(args);
 }

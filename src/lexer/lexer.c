@@ -298,7 +298,10 @@ static TokenType identifierType(Lexer *lexer) {
 static Token string(Lexer *lexer) {
     while (notMatch(lexer, '"')) {
         if (peek(lexer) == '\n') {
-            newline(lexer); 
+            // not using `newline()` because it synchronizes and discards
+            // the string’s previous line.
+            lexer->loc.line++;
+            lexer->loc.col = 1;
         }
 
         advance(lexer);
