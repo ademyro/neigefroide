@@ -1,9 +1,10 @@
 .DEFAULT_GOAL := debug
 
+SRC := src/
+
 CC := gcc
-CFLAGS := -Isrc/include/ -o nevec
-FILES := src/main.c src/err/err.c src/err/render.c src/lexer/lexer.c \
-src/lexer/token.c
+CFLAGS := -Wall -Wextra -pedantic -Werror -Wconversion -Isrc/include/ -o nevec
+FILES := $(shell find $(SRC) -name '*.c')
 LIBS := -lm
 
 debug:

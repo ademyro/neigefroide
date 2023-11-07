@@ -19,7 +19,7 @@ static bool atEnd(Lexer *lexer) {
 }
 
 static int currTokenLength(Lexer *lexer) {
-    return lexer->curr - lexer->start;
+    return (int)(lexer->curr - lexer->start);
 }
 
 static char peek(Lexer *lexer) {
@@ -145,9 +145,11 @@ static void skipWhitespace(Lexer *lexer) {
     }
 }
 
-static TokenType checkKeyword(Lexer *lexer, int start, int length, 
+static TokenType checkKeyword(Lexer *lexer, int start, size_t length, 
                               const char *expected, TokenType type) {
-    if (currTokenLength(lexer) == start + length && 
+    int identifierLength = start + (int)length;
+
+    if (currTokenLength(lexer) == identifierLength && 
         memcmp(lexer->start + start, expected, length) == 0) {
         return type;
     }
@@ -282,6 +284,9 @@ static TokenType identifierType(Lexer *lexer) {
         case 'n':
             return checkKeyword(lexer, 1, 2, "il", NIL);
 
+        case 'r':
+            return checkKeyword(lexer, 1, 5, "eturn", RETURN);
+
         case 's':
             return checkForS(lexer);
 
@@ -347,6 +352,10 @@ void initLexer(Lexer *lexer, char *src) {
     lexer->start = src;
 
     lexer->loc = newLoc();
+}
+
+void freeLexer(Lexer *lexer) {
+    lexer->loc = newLoc(); 
 }
 
 Token nextToken(Lexer *lexer) {

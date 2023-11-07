@@ -10,7 +10,7 @@
 static int lineDigits = 1;
 
 static int digitsIn(int n) {
-    return floor(log10(abs(n)) + 1);
+    return (int)floor(log10(abs(n)) + 1);
 }
 
 static void write(const char *s) {
@@ -112,7 +112,7 @@ void renderLocus(const char *fname, Loc loc) {
 void renderLine(char *src, Loc loc) {
     int line = loc.line;
     char *lineStart = findLine(src, line);
-    int lineEnd = strcspn(lineStart, "\n");
+    int lineEnd = (int)strcspn(lineStart, "\n");
 
     writeLinePipes(line);
 
@@ -161,7 +161,7 @@ void highlightChange(Loc loc, const char *fmt, va_list args) {
     endFormat();
 }
 
-void renderHint(Loc loc, const char *fmt, va_list args) {
+void renderHint(const char *fmt, va_list args) {
     writef(BLUE "%*s -> 💡 ", lineDigits, "");
     
     vfprintf(stderr, fmt, args);
@@ -172,7 +172,7 @@ void renderHint(Loc loc, const char *fmt, va_list args) {
 void renderModifiedLine(char *src, Loc loc, const char *fmt, va_list args) {
     int line = loc.line;
     char *lineStart = findLine(src, line);
-    int lineEnd = strcspn(lineStart, "\n\0");
+    int lineEnd = (int)strcspn(lineStart, "\n\0");
 
     writeLinePipes(line);
 
@@ -187,10 +187,21 @@ void renderModifiedLine(char *src, Loc loc, const char *fmt, va_list args) {
     endFormat();
 }
 
-void renderFix(char *src, Loc loc, const char *fmt, va_list args) {
+void renderFix(Loc loc, const char *fmt, va_list args) {
     writeLinePipes(loc.line);
 
     write(GREEN);
     vfprintf(stderr, fmt, args);
     highlightChange(loc, fmt, args);
+
+    endFormat();
+}
+
+void renderFmtLine(Loc loc, const char *fmt, va_list args) {
+    writeLinePipes(loc.line);
+
+    vfprintf(stderr, fmt, args);
+    fputc('\n', stderr);
+    
+    endFormat();
 }

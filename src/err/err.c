@@ -53,11 +53,11 @@ void showNote(Loc loc, const char *fmt, ...) {
     va_end(args);
 }
 
-void showHint(Loc loc, const char *fmt, ...) {
+void showHint(const char *fmt, ...) {
     va_list args;
 
     va_start(args, fmt);
-    renderHint(loc, fmt, args);
+    renderHint(fmt, args);
     va_end(args);
 }
 
@@ -82,7 +82,15 @@ void suggestFixAbove(int line, const char *fmt, ...) {
     lineBelow.line = line + 1;
 
     va_start(args, fmt);
-    renderFix(src, fixLoc, fmt, args);
+    renderFix(fixLoc, fmt, args);
     renderLine(src, lineBelow);
+    va_end(args);
+}
+
+void suggestExample(Loc loc, const char *fmt, ...) {
+    va_list args;
+
+    va_start(args, fmt);
+    renderFmtLine(loc, fmt, args);
     va_end(args);
 }

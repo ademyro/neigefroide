@@ -10,10 +10,11 @@ So far, we’ve implemented:
 * A nice color formatter.
 * A simple error message renderer.
     * `error: too many arguments; aborting.`
+* Determine an emoji and a concise header for each `Err.`
+* Have better, more intuitive error messages (refer to `examples/.`)
+* Implement hints or notes (refer to `examples/` too.) 
 
 What’s left:
 
-* Once we get our Lexer working:
-    * Determine an emoji and a concise header for each `Err.`
-    * Have better, more intuitive error messages (refer to `examples/.`)
-    * Implement hints or notes (refer to `examples/` too.) 
+* Hopefully, this module should be complete.  Yay!  Feel free to contribute to 
+it if you encounter a bug.

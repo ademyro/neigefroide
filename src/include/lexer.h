@@ -11,6 +11,7 @@ typedef struct {
 } Lexer;
 
 void initLexer(Lexer *lexer, char *src);
+void freeLexer(Lexer *lexer);
 Token nextToken(Lexer *lexer);
 
 #endif

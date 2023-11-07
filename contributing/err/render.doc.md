@@ -48,7 +48,7 @@ being `fmt` and `...`)
 `args,` finished writing the line, and then adds `+` symbols underneath 
 the fix.
 
-`void renderFix(char *src, int line, const char *fmt, va_list args)`
+`void renderFix(Loc loc, const char *fmt, va_list args)`
 * Prints a new line given `fmt` and `...` and renders it as a fix.
 
 `static int digitsIn(int n)`

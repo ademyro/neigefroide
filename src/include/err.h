@@ -13,8 +13,9 @@ void cliErr(const char *fmt, ...);
 void reportErrAt(Loc loc, const char *fmt, ...);
 void showOffendingLine(Loc loc, const char *fmt, ...);
 void showNote(Loc loc, const char *fmt, ...);
-void showHint(Loc loc, const char *fmt, ...);
+void showHint(const char *fmt, ...);
 void suggestFix(Loc loc, const char *fmt, ...);
 void suggestFixAbove(int line, const char *fmt, ...);
+void suggestExample(Loc loc, const char *fmt, ...);
 
 #endif
