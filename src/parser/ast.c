@@ -74,6 +74,7 @@ Ast *wrapFn(AstFn *node) {
     Ast *wrapper = newNode();
     wrapper->as.fn = node;
     wrapper->loc = node->loc;
+    wrapper->type = NODE_FN;
 
     return wrapper;
 }
@@ -82,6 +83,7 @@ Ast *wrapBody(AstBody *node) {
     Ast *wrapper = newNode();
     wrapper->as.body = node;
     wrapper->loc = node->loc;
+    wrapper->type = NODE_BODY;
     
     return wrapper;
 }
@@ -90,6 +92,7 @@ Ast *wrapRet(AstRet *node) {
     Ast *wrapper = newNode();
     wrapper->as.ret = node;
     wrapper->loc = node->loc;
+    wrapper->type = NODE_RET;
 
     return wrapper;
 }
@@ -98,6 +101,7 @@ Ast *wrapBinOp(AstBinOp *node) {
     Ast *wrapper = newNode();
     wrapper->as.binOp = node;
     wrapper->loc = node->loc;
+    wrapper->type = NODE_BINOP;
 
     return wrapper;
 }
@@ -106,6 +110,7 @@ Ast *wrapUnOp(AstUnOp *node) {
     Ast *wrapper = newNode();
     wrapper->as.unOp = node;
     wrapper->loc = node->loc;
+    wrapper->type = NODE_UNOP;
 
     return wrapper;
 }
@@ -114,6 +119,7 @@ Ast *wrapInt(AstInt *node) {
     Ast *wrapper = newNode();
     wrapper->as.intNode = node;
     wrapper->loc = node->loc;
+    wrapper->type = NODE_INT;
 
     return wrapper;
 }
@@ -122,6 +128,7 @@ Ast *wrapFloat(AstFloat *node) {
     Ast *wrapper = newNode();
     wrapper->as.floatNode = node;
     wrapper->loc = node->loc;
+    wrapper->type = NODE_FLOAT;
 
     return wrapper;
 }

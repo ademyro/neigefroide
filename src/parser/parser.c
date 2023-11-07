@@ -302,7 +302,7 @@ static Ast *parsePrimary(Parser *parser) {
             showOffendingLine(here, "was looking for a value (like an int)");
             showHint("you might’ve made a typo or forgotten a comma."); 
             showHint("here's an example of a well-formed expression:");
-            suggestExample(here, "    let x = y + z - 42;\n");
+            suggestExample(here, "    let x = y + z - 42;");
 
             // not sure what to return here  
             Ast *placeholder = newNode();

@@ -4,6 +4,7 @@
 #include "comp.h"
 #include "err.h"
 #include "parser.h"
+#include "pretty.h"
 
 void compile(const char *fname, char *src) {
     initErrMod(fname, src);
@@ -12,10 +13,10 @@ void compile(const char *fname, char *src) {
 
     if (!res.success) {
         cliErr("parsing failed; stopping.");
-        free(res.ast);
+        freeAst(res.ast);
 
         return;
     }
 
-    free(res.ast);
+    freeAst(res.ast);
 }

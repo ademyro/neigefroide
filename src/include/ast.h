@@ -10,7 +10,7 @@ typedef enum {
     NODE_PARAM,
     NODE_FN,
     NODE_RET,
-    NODE_BIN,
+    NODE_BINOP,
     NODE_UNOP,
     NODE_INT,
     NODE_FLOAT
