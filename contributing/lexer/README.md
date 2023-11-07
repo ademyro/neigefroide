@@ -17,4 +17,6 @@ So far, we’ve implemented:
 * Wrote temporary compiler code to drive it (refer to `main.compile().`)
 
 What’s left:
-* `nil.`
+
+* Hopefully, this module should be complete.  Yay!  Feel free to contribute to 
+it if you encounter a bug.

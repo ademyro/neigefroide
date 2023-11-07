@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "comp.h"
 #include "core.h"
 #include "err.h"
-#include "lexer.h"
-#include "token.h"
 
 #define READ_BIN "rb"
 
@@ -17,11 +16,11 @@ static char *readFile(const char *fname) {
     }
 
     fseek(file, 0, SEEK_END);
-    size_t fsize = ftell(file);
+    size_t fsize = (size_t)ftell(file);
     rewind(file);
 
     char *buf = malloc(fsize + 1);
-    size_t end = fread(buf, sizeof (char), fsize, file);
+    size_t end = (size_t)fread(buf, sizeof (char), fsize, file);
 
     if (buf == NULL) {
         cliErr("not enough memory to read %s.", fname);
@@ -35,38 +34,10 @@ static char *readFile(const char *fname) {
     return buf;
 }
 
-static void compile(const char *fname) {
+static void compileFile(const char *fname) {
     char *contents = readFile(fname);
-    initErrMod(fname, contents);
 
-    Lexer lexer;
-    initLexer(&lexer, contents);
-    Token firstToken = nextToken(&lexer);
-
-    while (true) {
-        Token token = nextToken(&lexer);
-
-        printf("%2d:%2d %2d ", token.loc.line, token.loc.col, token.type);
-        printf("'%.*s'\n", token.loc.length, token.start);
-
-        if (token.type == END) {
-            reportErrAt(token.loc, "😱 resource leak (test)");
-            showOffendingLine(token.loc, "end of scope, ‘buf’ not freed");
-            showNote(firstToken.loc, "‘buf’ declared here");
-            showHint(token.loc, "free ‘buf’ before exiting the scope");
-            suggestFix(token.loc, "buf.free();");
-            break;
-        }
-
-        // Hey, that’s temporary okay?
-        if (token.type == ERR) {
-            reportErrAt(token.loc, "🧐 unexpected character");
-            showOffendingLine(token.loc, "what is this?");
-            showHint(token.loc, "‘%c’ isn’t recognized as a valid token", 
-                     *token.start);
-        }
-    }
-
+    compile(fname, contents);
     free(contents);
 }
 
@@ -76,6 +47,6 @@ int main(int argc, char **argv) {
         exit(1);
     } else if (argc == 2) {
         const char *fname = argv[1];
-        compile(fname);
+        compileFile(fname);
     }
 }

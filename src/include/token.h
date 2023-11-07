@@ -1,9 +1,12 @@
 #ifndef nevec_tokens_h
 #define nevec_tokens_h
 
+#define DIGITS_IN_I32 11
+
 typedef enum {
     EXT, FN, FOR, IF, IN, 
     LET, MUT, SELF, STRUCT, WHILE,
+    RETURN,
 
     LPAREN, RPAREN, 
     LBRACE, RBRACE,  
@@ -39,11 +42,14 @@ typedef struct {
 
 typedef struct {
     char *start;
+
     TokenType type;
     Loc loc;
 } Token;
 
 Loc newLoc();
+Loc mergeLocs();
 Token newToken(char *start, TokenType type, Loc loc);
+char *copyLexeme(Token token);
 
 #endif
