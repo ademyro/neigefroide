@@ -18,5 +18,7 @@ void compile(const char *fname, char *src) {
         return;
     }
 
+    Ast *ast = res.ast;
+    prettyPrint(ast);
     freeAst(res.ast);
 }

@@ -160,6 +160,12 @@ static TokenType checkKeyword(Lexer *lexer, int start, size_t length,
 static TokenType checkForF(Lexer *lexer) {
     if (currTokenLength(lexer) > 1) {
         switch (lexer->start[1]) {
+            case '3':
+                return checkKeyword(lexer, 2, 1, "2", F32);
+
+            case '6':
+                return checkKeyword(lexer, 2, 1, "4", F64);
+
             case 'a': 
                 return checkKeyword(lexer, 2, 3, "lse", TFALSE);
 

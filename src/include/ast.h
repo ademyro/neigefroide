@@ -70,6 +70,7 @@ typedef struct {
     NumericType bitWidth;     
 
     union {
+        size_t size;
         int8_t int8;
         int16_t int16;
         int int32;
@@ -124,4 +125,5 @@ Ast *wrapBinOp(AstBinOp *node);
 Ast *wrapUnOp(AstUnOp *node);
 Ast *wrapInt(AstInt *node);
 Ast *wrapFloat(AstFloat *node);
+void freeAst(Ast *ast);
 #endif

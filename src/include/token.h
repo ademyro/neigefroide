@@ -1,7 +1,7 @@
 #ifndef nevec_tokens_h
 #define nevec_tokens_h
 
-#define DIGITS_IN_I32 11
+#define DIGITS_IN_I32 10
 
 typedef enum {
     EXT, FN, FOR, IF, IN, 

@@ -22,6 +22,10 @@ static void freeParser(Parser *parser) {
     free(parser->lexer);
 }
 
+static void markErr(Parser *parser) {
+    parser->hadErr = true;
+}
+
 static void reportSimpleErr(Loc loc, const char *msg) {
     reportErrAt(loc, msg);
     showOffendingLine(loc, msg);
@@ -52,7 +56,7 @@ static void advance(Parser *parser) {
             break;
         }
 
-        parser->hadErr = true;
+        markErr(parser);
         lexerErr(parser->curr);
     }
 }
@@ -60,6 +64,30 @@ static void advance(Parser *parser) {
 static bool atEnd(Parser *parser) {
     Token curr = parser->curr;
     return curr.type == END;
+}
+
+static void synchronize(Parser *parser) {
+    advance(parser);
+
+    while (!atEnd(parser)) {
+        if (parser->prev.type == SEMICOLON) {
+            return;
+        }
+
+        switch (parser->curr.type) {
+            case FN:
+            case FOR:
+            case IF:
+            case LET:
+            case STRUCT:
+            case WHILE:
+            case RETURN:
+                return;
+
+            default:
+                advance(parser);
+        }
+    }
 }
 
 static bool match(Parser *parser, TokenType type) {
@@ -81,6 +109,7 @@ static Token expect(Parser *parser, TokenType type, const char *msg) {
     Token curr = parser->curr;
 
     if (curr.type != type) {
+        markErr(parser);
         reportSimpleErr(curr.loc, msg);
     }
 
@@ -109,11 +138,16 @@ static AstInt *parseInt(Parser *parser);
 static AstFloat *parseFloat(Parser *parser);
 
 static Ast *parseDecl(Parser *parser) {
-    advance(parser);
-    Token prev = parser->prev;
+    Token curr = parser->curr;
 
-    switch (prev.type) {
+    if (parser->hadErr) {
+        synchronize(parser);
+    }
+
+    switch (curr.type) {
         case FN: {
+            advance(parser);
+
             AstFn *fn = parseFn(parser);
             return wrapFn(fn);
         }
@@ -296,6 +330,8 @@ static Ast *parsePrimary(Parser *parser) {
         }
 
         default: {
+            markErr(parser);
+
             Loc here = curr.loc;
 
             reportErrAt(here, "🤔 unexpected token");
@@ -341,7 +377,7 @@ static AstFloat *parseFloat(Parser *parser) {
 
     advance(parser);
 
-    floatNode->isDoublePrecise = match(parser, F32);
+    floatNode->isDoublePrecise = !match(parser, F32);
 
     if (floatNode->isDoublePrecise) {
         floatNode->as.doublePrecise = strtod(lexeme, NULL);
