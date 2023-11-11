@@ -1,84 +1,188 @@
+#include <stdarg.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "ast.h"
+#include "core.h"
 #include "pretty.h"
 #include "token.h"
+#include "type.h"
 
-static void freeBody(AstBody *body) {
-    body->size = 0;
-    body->cap = 0;
-    body->loc = newLoc();
+static int indentation = 0;
 
-    free(body->nodes);
-    free(body);
+static void write(const char *fmt, ...) {
+    va_list args; 
+
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    va_end(args);
 }
 
-static void freeFn(AstFn *fn) {
-    freeBody(fn->body);      
-
-    fn->loc = newLoc();
-
-    free(fn);
+static void newline() {
+    write("\n%*s", indentation, "");
 }
 
-static void freeRet(AstRet *ret) {
-    freeAst(ret->expr);
-
-    ret->loc = newLoc();
-
-    free(ret);
+static void indent() {
+    indentation += 2;
 }
 
-static void freeBinOp(AstBinOp *binOp) {
-    freeAst(binOp->left);
-    freeAst(binOp->right);
+static void unindent() {
+    indentation -= 2;
+}
 
-    binOp->loc = newLoc();
+static void printBody(AstBody *body) {
+    write("Body");
+    indent();
+    newline();
+
+    for (size_t i = 0; i < body->size; i++) {
+        prettyPrint(body->nodes[i]);
+    } 
     
-    free(binOp);
+    unindent();
+    newline();
 }
 
-static void freeUnOp(AstUnOp *unOp) {
-    freeAst(unOp->child);
+static void printFn(AstFn *fn) {
+    char *name = copyLexeme(fn->name);
 
-    unOp->loc = newLoc();
+    // [!] add arguments & return type later
+    write("Fn %s [!]", name);
+    indent(); 
+    newline();
 
-    free(unOp);
+    printBody(fn->body);    
+
+    unindent();
+    newline();
+
+    free(name);
 }
 
-void freeAst(Ast *ast) {
+static void printRet(AstRet *ret) {
+    write("Ret");
+    indent();
+    newline();
+
+    prettyPrint(ret->expr);
+
+    unindent();
+    newline();
+}
+
+static void printBinOp(AstBinOp *binOp) {
+    char *op = copyLexeme(binOp->op);
+
+    write("( ");
+    
+    prettyPrint(binOp->left);
+    write(" %s ", op); 
+    prettyPrint(binOp->right);
+
+    write(" )");
+    
+    free(op);
+}
+
+static void printUnOp(AstUnOp *unOp) {
+    char *op = copyLexeme(unOp->op);
+
+    write("( ");
+
+    write("%s ", op);
+    prettyPrint(unOp->child); 
+
+    write(" )");
+
+    free(op);
+}
+
+static void printInt(AstInt *intNode) {
+    write("Int");
+
+    switch (intNode->bitWidth) {
+        case ARCH: {
+            size_t value = intNode->as.size;
+
+            write("Size '%zu'", value);
+            break;
+        }
+        
+        case BIT8: {
+            int8_t value = intNode->as.int8;
+
+            write("8 '%hhd'", value);
+            break;
+        }
+        
+        case BIT16: {
+            int16_t value = intNode->as.int16;
+            
+            write("16 '%hd'", value);
+            break;
+        }
+
+        case BIT32: {
+            int32_t value = intNode->as.int32;
+
+            write("32 '%d'", value);
+            break;
+        }
+
+        case BIT64: {
+            int64_t value = intNode->as.int64;
+
+            write("64 '%lld'", value);
+            break;
+        }
+    }
+}
+
+static void printFloat(AstFloat *floatNode) {
+    write("Float"); 
+
+    if (floatNode->isDoublePrecise) {
+        double value = floatNode->as.doublePrecise;
+
+        write("64 '%lf'", value);
+    } else {
+        float value = floatNode->as.singlePrecise;
+
+        write("32 '%f'", value);
+    }
+}
+
+void prettyPrint(Ast *ast) {
     switch (ast->type) {
         case NODE_BODY:
-            freeBody(ast->as.body); 
+            printBody(ast->as.body);
             break;
 
         case NODE_FN:
-            freeFn(ast->as.fn);
+            printFn(ast->as.fn);
             break;
-        
+
         case NODE_RET:
-            freeRet(ast->as.ret);
+            printRet(ast->as.ret);
             break;
 
         case NODE_BINOP:
-            freeBinOp(ast->as.binOp);
+            printBinOp(ast->as.binOp);
             break;
-
+        
         case NODE_UNOP:
-            freeUnOp(ast->as.unOp);
+            printUnOp(ast->as.unOp);
             break;
 
         case NODE_INT:
-            free(ast->as.intNode);
+            printInt(ast->as.intNode);
             break;
 
         case NODE_FLOAT:
-            free(ast->as.floatNode);
+            printFloat(ast->as.floatNode);
             break;
 
         default:
             ;
     }
-
-    free(ast);
 }

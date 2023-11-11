@@ -4,6 +4,6 @@
 #include "ast.h"
 
 // temporary.
-void freeAst(Ast *ast);
+void prettyPrint(Ast *ast);
 
 #endif

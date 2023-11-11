@@ -37,6 +37,10 @@ static char *readFile(const char *fname) {
 static void compileFile(const char *fname) {
     char *contents = readFile(fname);
 
+    if (contents == NULL) {
+        return;
+    }
+
     compile(fname, contents);
     free(contents);
 }

@@ -1,0 +1,6 @@
+fn main() {
+    return 1;
+    return 2;
+    return 90 - 2;
+    return 100;
+}

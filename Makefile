@@ -9,3 +9,9 @@ LIBS := -lm
 
 debug:
 	@$(CC) $(CFLAGS) -g $(FILES) $(LIBS)
+
+test:
+	@for file in tests/*.nv; do \
+		echo "Test $${file}"; \
+		./nevec "$${file}"; \
+	done	
